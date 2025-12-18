@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<title>TinoProp - CRM Inmobiliario</title>
+	<title>AdminViews</title>
 </head>
 
 <body>
@@ -42,11 +42,19 @@
 					<i class="fa-solid fa-user"></i>
 				</div>
 				<div class="input-group">
-					<input type="password" name="contrasena" placeholder="Contraseña" required />
+					<input type="password" name="contrasena" placeholder="Contraseña" required
+						<?php if(isset($_GET['error'])) echo 'style="border: 3px solid red;"'; ?>
+					/>
 					<i class="fa-solid fa-lock"></i>
+
 				</div>
 				<a href="#">¿Olvidaste tu contraseña?</a>
 				<button type="submit">Iniciar Sesión</button>
+				<?php
+					if (isset($_GET['error'])) {
+						echo "<p style='color: red; font-weight: bold;'>Contraseña incorrecta</p>";
+					}
+				?>
 			</form>
 		</div>
 		<div class="overlay-container">

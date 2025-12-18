@@ -27,5 +27,5 @@
 	$conexion->close();
 
 	// Y redirigimos al usuario a la página de inicio
-	header("Location: login.html");
+	header("Location: login.php");
 ?>

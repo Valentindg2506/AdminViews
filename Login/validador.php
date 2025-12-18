@@ -13,15 +13,6 @@
 		}
 		return true;
 	}
-	// --- ZONA DE PRUEBAS ---
-
-	// Array de pruebas: contraseña => descripción del caso
-	$pruebas = [
-		"Valencia2025!" => "Correcta (Longitud OK + Símbolo)",
-		"hola"          => "Incorrecta (Muy corta)",
-		"soyunacontrasenamuy_larga" => "Incorrecta (Muy larga)",
-		"Valencia2025"  => "Incorrecta (Falta símbolo)"
-	];
 
 	foreach ($pruebas as $pass => $caso) {
 		$esValida = validarContrasena($pass);
