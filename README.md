@@ -28,5 +28,5 @@
 ---
 
 ✒️ Autores
-Valentín de Gennaro - Estudiante de Desarrollo de Aplicaciones Multiplataforma (DAM).
+Valentín de Gennaro - Estudiante de Desarrollo de Aplicaciones Multiplataforma (DAM).<br>
 Daniel Oliveira - Estudiante de Desarrollo de Aplicaciones Multiplataforma (DAM).
