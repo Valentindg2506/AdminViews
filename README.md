@@ -28,5 +28,5 @@
 ---
 
 ✒️ Autores<br>
-Valentín de Gennaro - Estudiante de Desarrollo de Aplicaciones Multiplataforma (DAM).<br>
-Daniel Oliveira - Estudiante de Desarrollo de Aplicaciones Multiplataforma (DAM).
+<a href="https://www.google.com/url?sa=E&source=gmail&q=https://github.com/Valentindg2506" target="_blank"> <img src="https://www.google.com/url?sa=E&source=gmail&q=https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="25" style="vertical-align:middle"> <b>Valentin De Gennaro</b> </a> - Estudiante de Desarrollo de Aplicaciones Multiplataforma (DAM).<br>
+<a href="https://www.google.com/url?sa=E&source=gmail&q=https://github.com/ElOrange12" target="_blank"> <img src="https://www.google.com/url?sa=E&source=gmail&q=https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" width="25" style="vertical-align:middle"> <b>Daniel Oliveira</b> </a> - Estudiante de Desarrollo de Aplicaciones Multiplataforma (DAM).<br>
