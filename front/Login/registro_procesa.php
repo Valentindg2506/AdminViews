@@ -1,31 +1,36 @@
 <?php
-	// Primero cogemos la info que viene del formulario
-	$nombre = $_POST['nombrecompleto'];
-	$usuario = $_POST['usuario'];
-	$contrasena = ($_POST['contrasena']);
-	$correo = $_POST['email'];
-	// Y luego metemos esa información en la base de datos
+$errores = [];
+$nombre = $usuario = $email = "";
 
-	$host = "localhost";
-	$user = "AdminViews";
-	$pass = "AdminViews123$";
-	$db   = "AdminViews";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nombre = $_POST['nombrecompleto'];
+    $usuario = $_POST['usuario'];
+    $contrasena = $_POST['contrasena'];
+    $correo = $_POST['email'];
 
-	$conexion = new mysqli($host, $user, $pass, $db);
+    // Validaciones
+    if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) $errores[] = "Email inválido.";
+    if (!preg_match('/^(?=.*[A-Z])(?=.*[\W_]).{8,16}$/', $contrasena)) 
+        $errores[] = "Password: 8-16 chars, 1 mayúscula, 1 símbolo.";
 
-	// Metemos los datos en la base de datos
-	$sql = "
-		INSERT INTO usuario (usuario, contrasena, nombre, correo) VALUES (
-		'".$usuario."',
-		'".$contrasena."',
-		'".$nombre."',
-		'".$correo."'
-		);
-	";
-	$conexion->query($sql);
+    if (empty($errores)) {
+        // IMPORTAMOS LA CONEXIÓN AQUÍ
+        require_once 'db.php'; 
 
-	$conexion->close();
-
-	// Y redirigimos al usuario a la página de inicio
-	header("Location: index.php");
+        $passHash = password_hash($contrasena, PASSWORD_DEFAULT);
+        
+        $sql = "INSERT INTO usuario (usuario, contrasena, nombre, correo) VALUES (?, ?, ?, ?)";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("ssss", $usuario, $passHash, $nombre, $correo);
+        
+        if($stmt->execute()){
+            header("Location: index.php");
+            exit;
+        } else {
+            $errores[] = "Error BD: " . $conexion->error;
+        }
+        $stmt->close();
+        $conexion->close();
+    }
+}
 ?>
