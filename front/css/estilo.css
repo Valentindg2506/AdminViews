@@ -1,38 +1,69 @@
-header {
-	background-image: url('img/Banner_principal.png');
-	background-size: cover;
-	background-position: center;
-	min-height: 40vh; 
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-	color: #e85d04;
-	padding: 40px 20px;
-	box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-	border-bottom: 15px solid rgba(0,0,0,0.9);
+/* --- RESET GENERAL --- */
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.btn-inicio {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-	width: 60px; 
-	height: 60px;
+/* --- ESTILOS DE LA CABECERA --- */
+header {
+    /* FONDO DEGRADADO (Igual que antes) */
+    background: linear-gradient(to right, rgb(255, 69, 0), rgb(255, 127, 80));
 
-	transition: transform 0.3s ease;
-	z-index: 10;
+    /* TAMAÑO Y ESPACIADO (CAMBIOS AQUÍ) */
+    /* Quitamos el min-height fijo y dejamos que el contenido dicte la altura */
+    width: 100%;
+    
+    /* Padding reducido: 10px arriba/abajo, 5px a los lados (casi pegado) */
+    padding: 10px 10px; 
+    
+    box-sizing: border-box;
+
+    /* Flexbox */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    /* Color y Decoración */
+    color: #FFFFFF; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    border-bottom: 1px solid rgba(0,0,0,0.9);
+}
+
+/* --- ESTILOS DEL LOGO ADMINVIEWS --- */
+.logo-admin {
+    /* Aumentamos un poco el ancho permitido para que se lea bien */
+    max-width: 150px; 
+    /* Limitamos la altura para que no deforme la cabecera */
+    max-height: 50px; 
+    
+    background-color: #FFFFFF;
+    
+    /* Reduje un poco el padding interno del logo para ganar espacio */
+    padding: 5px 8px; 
+    
+    border-radius: 8px; /* Radio un poco más sutil */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* --- ESTILOS DEL BOTÓN DE VOLVER --- */
+.btn-inicio {
+    display: block;
+    /* Ajustado a 45px (un poco más pequeño que 50, pero aún fácil de clicar) */
+    width: 45px; 
+    height: 45px;
+    transition: transform 0.3s ease;
+    z-index: 10;
 }
 
 .btn-inicio img {
-	width: 100%;
-	height: 100%;
-	object-fit: contain;
-	/* filter: invert(1); <-- Recuerda descomentar esto si tu logo es negro */
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .btn-inicio:hover {
-	transform: scale(1.1);
-	cursor: pointer;
+    transform: scale(1.1);
+    cursor: pointer;
 }
