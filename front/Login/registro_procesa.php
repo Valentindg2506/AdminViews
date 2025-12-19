@@ -7,15 +7,15 @@
 	// Y luego metemos esa información en la base de datos
 
 	$host = "localhost";
-	$user = "CRM";
-	$pass = "Crm2526$";
-	$db   = "CRM";
+	$user = "AdminViews";
+	$pass = "AdminViews123$";
+	$db   = "AdminViews";
 
 	$conexion = new mysqli($host, $user, $pass, $db);
 
 	// Metemos los datos en la base de datos
 	$sql = "
-		INSERT INTO usuarios (usuario, contrasena, nombrecompleto, email) VALUES (
+		INSERT INTO usuario (usuario, contrasena, nombrecompleto, email) VALUES (
 		'".$usuario."',
 		'".$contrasena."',
 		'".$nombrecompleto."',
@@ -27,5 +27,5 @@
 	$conexion->close();
 
 	// Y redirigimos al usuario a la página de inicio
-	header("Location: login.php");
+	header("Location: index.php");
 ?>
