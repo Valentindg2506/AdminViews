@@ -1,20 +1,15 @@
 <?php
-	session_start(); // 1. Arrancamos sesión para leer errores
+	session_start(); 
 
 	// Recuperamos errores y datos viejos si vienen del procesador
 	$errores = isset($_SESSION['errores']) ? $_SESSION['errores'] : [];
-	$datos = isset($_SESSION['datos_viejos']) ? $_SE<?php
-	session_start(); // 1. Arrancamos sesión para leer errores
-
-	// Recuperamos errores y datos viejos si vienen del procesador
-	$errores = isset($_SESSION['errores']) ? $_SESSION['errores'] : [];
+	// Aquí estaba el error:
 	$datos = isset($_SESSION['datos_viejos']) ? $_SESSION['datos_viejos'] : [];
 
-	// Borramos la sesión para que, si recargas, se limpien los errores
+	// Borramos la sesión para limpiar errores al recargar
 	unset($_SESSION['errores']);
 	unset($_SESSION['datos_viejos']);
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
