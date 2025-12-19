@@ -10,6 +10,8 @@ CREATE TABLE usuario (
 	contrasena VARCHAR(255)
 );
 
+ALTER TABLE usuario ADD token VARCHAR(255) NULL;
+
 CREATE TABLE contenido (
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	usuario_id INT,
@@ -22,6 +24,7 @@ CREATE TABLE contenido (
 	nivel_prioridad ENUM('Alta', 'Media', 'Baja') NOT NULL DEFAULT 'Media',
 	CONSTRAINT fk_contenido_1 FOREIGN KEY (usuario_id) REFERENCES usuario(id)
 );
+
 
 -- usuario
 

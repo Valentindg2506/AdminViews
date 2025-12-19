@@ -49,10 +49,13 @@
 				<div class="input-group">
 					<input type="text" name="usuario" placeholder="Usuario" 
 						value="<?php echo isset($datos['usuario']) ? htmlspecialchars($datos['usuario']) : ''; ?>"
+						style="<?php echo isset($errores['usuario']) ? 'border: 2px solid red;' : ''; ?>"
 						required />
 					<i class="fa-solid fa-user-tag"></i>
 				</div>
-
+				<?php if(isset($errores['usuario'])): ?>
+					<small style="color:red; font-size: 0.7em;"><?php echo $errores['usuario']; ?></small>
+				<?php endif; ?>
 				<div class="input-group">
 					<input type="password" name="contrasena" placeholder="Contraseña" required
 						style="<?php echo isset($errores['pass']) ? 'border: 2px solid red;' : ''; ?>"
@@ -86,8 +89,6 @@
 						echo "<p style='color: red; font-size: 0.8em; margin-top:5px;'>Usuario o contraseña incorrectos</p>";
 					}
 				?>
-				
-				<a href="#">¿Olvidaste tu contraseña?</a>
 				<button type="submit">Iniciar Sesión</button>
 			</form>
 		</div>
