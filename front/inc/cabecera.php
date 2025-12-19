@@ -8,6 +8,13 @@
     <body>
         <header>
         	<img src="../img/adminviews.png" class="logo-admin" alt="Logo AdminViews">
-	        <a href="../Login/exito" class="btn-inicio"><img src="../img/iconovuelta.png" alt="Volver al Inicio"></a> 
+        	
+        	<nav class="navegacion-header">
+				<a href="exito.php">Inicio</a>
+				<a href="series.php">Series</a>
+				<a href="peliculas.php">Películas</a>
+			</nav>
+        	
+	        <a href="../Login/exito.php" class="btn-inicio"><img src="../img/iconovuelta.png" alt="Volver al Inicio" title="Inicio"></a> 
         </header>
         <main>

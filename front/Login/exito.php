@@ -31,7 +31,7 @@
 					</div>
 					<div class="card-body">
 						<p>Accede a todas las series que tienes añadidas a tu lista de series pendientes, viendo o vistas.</p>
-						<a href="series.html" class="btn-flecha">
+						<a href="series.php" class="btn-flecha">
 						<img src="../img/flechaderecha.png" alt="Ir">
 						</a>
 					</div>
@@ -43,17 +43,10 @@
 					</div>
 					<div class="card-body">
 						<p>Accede a todas las películas que tienes añadidas a tu lista de películas pendientes o vistas.</p>
-						<a href="peliculas.html" class="btn-flecha">
+						<a href="peliculas.php" class="btn-flecha">
 						<img src="../img/flechaderecha.png" alt="Ir">
 					</a>
 					</div>
 				</article>
 			</section>
-		</main>
-		<footer>
-			<div class="footer-content">
-				<p>&copy; 2025 | Valentín De Genaro - Daniel Oliveira Vidal</p>
-			</div>
-		</footer>
-	</body>
-</html>
+<?php include "../inc/piedepagina.php" ?>

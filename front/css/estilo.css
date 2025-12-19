@@ -77,6 +77,48 @@ header {
     transform: scale(1.1);
     cursor: pointer;
 }
+
+/* --- ESTILOS DEL MENÚ DE NAVEGACIÓN --- */
+
+.navegacion-header {
+    display: flex;
+    gap: 25px; /* Separación entre las palabras */
+    align-items: center;
+}
+
+.navegacion-header a {
+    color: #FFFFFF;
+    text-decoration: none; /* Quita el subrayado típico de los enlaces */
+    font-size: 1.1rem;
+    font-weight: 600; /* Un poco de negrita */
+    text-transform: uppercase; /* Opcional: pone el texto en mayúsculas */
+    letter-spacing: 1px;
+    padding: 5px 0;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Efecto Hover: Cambia ligeramente la opacidad y añade una línea abajo */
+.navegacion-header a:hover {
+    color: rgba(255, 255, 255, 0.8);
+    border-bottom: 2px solid white; 
+}
+
+/* --- AJUSTE RESPONSIVE (PARA MÓVIL) --- */
+/* Añade esto para que en pantallas pequeñas el menú baje y no se amontone */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; /* Cambia a vertical */
+        gap: 15px; /* Espacio entre logo, menú y botón */
+        padding: 15px;
+    }
+
+    .navegacion-header {
+        flex-direction: row; /* Mantiene los enlaces en fila */
+        gap: 15px;
+        font-size: 0.9rem;
+    }
+}
  
 /* //////////////////////////////////////////////////////////////////// MAIN //////////////////////////////////////////////////////////////////// */
  
@@ -201,5 +243,3 @@ footer p {
     font-size: 0.9rem;
     letter-spacing: 0.5px;
 }
-
- 
