@@ -15,7 +15,7 @@
 
 	// Metemos los datos en la base de datos
 	$sql = "
-		INSERT INTO usuarios (usuario, contrasena, nombrecompleto, email) VALUES (
+		INSERT INTO usuario (usuario, contrasena, nombrecompleto, email) VALUES (
 		'".$usuario."',
 		'".$contrasena."',
 		'".$nombrecompleto."',
@@ -27,5 +27,5 @@
 	$conexion->close();
 
 	// Y redirigimos al usuario a la página de inicio
-	header("Location: login.php");
+	header("Location: index.php");
 ?>

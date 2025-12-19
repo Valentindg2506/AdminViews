@@ -11,7 +11,7 @@
 	$sql = "
 	SELECT 
 	*
-	FROM usuarios
+	FROM usuario
 	WHERE
 	usuario = '".$_POST['usuario']."'
 	AND
@@ -24,7 +24,7 @@
 		$_SESSION['usuario'] = 'si';
 		header("Location: exito.php");					// En ese caso vamos a la pagina de exito
 	}else{	 											// Si no hay ningun resultado
-		header("Location:login.php?error=1");					// En ese caso volvemos al login
+		header("Location:index.php?error=1");					// En ese caso volvemos al login
 		
 	}
 	
