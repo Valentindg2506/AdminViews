@@ -1,9 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 
+/* =========================================
+   1. RESETEO Y VARIABLES
+   ========================================= */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+}
+
+:root {
+    --primary: #FF7F50;
+    --gradiente: linear-gradient(to right, rgb(255, 69, 0), rgb(255, 127, 80));
 }
 
 body {
@@ -14,19 +22,18 @@ body {
     flex-direction: column;
     font-family: 'Inter', sans-serif;
     height: 100vh;
-    --primary: #FF7F50;
 }
 
+/* =========================================
+   2. TIPOGRAFÍA Y ELEMENTOS GENERALES
+   ========================================= */
 h1 {
     font-weight: 800;
-    margin: 0;
-    margin-bottom: 1rem;
+    margin: 0 0 1rem 0;
     color: var(--primary);
 }
 
-h2 {
-    text-align: center;
-}
+h2 { text-align: center; }
 
 p {
     font-size: 14px;
@@ -49,11 +56,13 @@ a {
     margin: 15px 0;
 }
 
+/* =========================================
+   3. BOTONES
+   ========================================= */
 button {
     border-radius: 20px;
     border: 1px solid var(--primary);
-    background: var(--primary);
-    background: linear-gradient(to right, rgb(255, 69, 0), rgb(255, 127, 80));
+    background: var(--gradiente);
     color: #FFFFFF;
     font-size: 12px;
     font-weight: bold;
@@ -64,22 +73,16 @@ button {
     cursor: pointer;
     box-shadow: 0 4px 15px rgba(235, 125, 36, 0.3);
     margin-top: 1rem;
-    /* Added spacing */
 }
 
-button:active {
-    transform: scale(0.95);
-}
-
-button:focus {
-    outline: none;
-}
-
+button:active { transform: scale(0.95); }
+button:focus { outline: none; }
 button:hover {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    background: linear-gradient(to right, rgb(255, 69, 0), rgb(255, 127, 80));
+    background: var(--gradiente);
 }
 
+/* Botón transparente (Ghost) para el panel de color */
 button.ghost {
     background: transparent;
     border-color: #FFFFFF;
@@ -89,9 +92,11 @@ button.ghost {
 button.ghost:hover {
     background: #FFFFFF;
     color: var(--primary);
-    box-shadow: none;
 }
 
+/* =========================================
+   4. FORMULARIOS (ESTILOS VISUALES)
+   ========================================= */
 form {
     background-color: #FFFFFF;
     display: flex;
@@ -103,11 +108,38 @@ form {
     text-align: center;
 }
 
+/* Inputs personalizados */
+.input-group {
+    position: relative;
+    width: 100%;
+    margin: 8px 0;
+}
+
+.input-group input {
+    background-color: #eee;
+    border: none;
+    padding: 12px 15px;
+    padding-left: 40px;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+}
+
+.input-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+/* =========================================
+   5. CONTENEDOR PRINCIPAL Y ANIMACIONES
+   ========================================= */
 .container {
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
-        0 10px 10px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
     position: relative;
     overflow: hidden;
     width: 900px;
@@ -122,72 +154,46 @@ form {
     transition: all 0.6s ease-in-out;
 }
 
+/* --- A. LOGIN (Visible por defecto a la izquierda) --- */
 .sign-in-container {
     left: 0;
     width: 50%;
     z-index: 2;
-    transform: translateX(100%);
 }
 
-.container.right-panel-active .sign-in-container {
-    transform: translateX(100%);
-
-    transform: translateX(0%);
-
-}
-
-/* Correct implementation for "Login Right, Register Left" */
-
-/* LOGIN FORM (Right side by default) */
-.sign-in-container {
-    left: 0;
-    width: 50%;
-    z-index: 2;
-    transform: translateX(100%);
-    /* Positioned on Right */
-}
-
+/* Al activar el panel derecho, el login se mueve a la derecha (detrás del registro) */
 .container.right-panel-active .sign-in-container {
     transform: translateX(100%);
 }
 
-/* REGISTRATION FORM (Left side by default) */
+/* --- B. REGISTRO (Oculto por defecto a la izquierda) --- */
 .sign-up-container {
     left: 0;
     width: 50%;
-    z-index: 1;
     opacity: 0;
-    /* Hidden initially */
+    z-index: 1;
 }
 
+/* Al activar panel, el registro se mueve a la derecha y aparece */
 .container.right-panel-active .sign-up-container {
-    transform: translateX(0%);
+    transform: translateX(100%);
     opacity: 1;
     z-index: 5;
     animation: show 0.6s;
 }
 
 @keyframes show {
-
-    0%,
-    49.99% {
-        opacity: 0;
-        z-index: 1;
-    }
-
-    50%,
-    100% {
-        opacity: 1;
-        z-index: 5;
-    }
+    0%, 49.99% { opacity: 0; z-index: 1; }
+    50%, 100% { opacity: 1; z-index: 5; }
 }
 
-/* OVERLAY CONTAINER */
+/* =========================================
+   6. OVERLAY (PANEL DESLIZANTE DE COLOR)
+   ========================================= */
 .overlay-container {
     position: absolute;
     top: 0;
-    left: 0;
-    /* Start on Left */
+    left: 50%; /* Empieza a la DERECHA */
     width: 50%;
     height: 100%;
     overflow: hidden;
@@ -195,15 +201,14 @@ form {
     z-index: 100;
 }
 
+/* Al activar, el contenedor del overlay se mueve a la IZQUIERDA */
 .container.right-panel-active .overlay-container {
-    transform: translateX(100%);
-    /* Move to Right */
+    transform: translateX(-100%);
 }
 
-/* OVERLAY BACKGROUND */
+/* Fondo degradado naranja */
 .overlay {
-    background: -webkit-linear-gradient(to right, rgb(255, 69, 0), rgb(255, 127, 80));
-    background: linear-gradient(to right, rgb(255, 69, 0), rgb(255, 127, 80));
+    background: var(--gradiente);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: 0 0;
@@ -213,16 +218,14 @@ form {
     height: 100%;
     width: 200%;
     transform: translateX(0);
-    /* Aligned for Left Panel visibility */
     transition: transform 0.6s ease-in-out;
 }
 
 .container.right-panel-active .overlay {
     transform: translateX(50%);
-    /* Shift background */
 }
 
-/* OVERLAY PANELS */
+/* Contenido de texto dentro del panel naranja */
 .overlay-panel {
     position: absolute;
     display: flex;
@@ -238,20 +241,10 @@ form {
     transition: transform 0.6s ease-in-out;
 }
 
-/* Left Panel (Visible initially) -> "Bienvenido de nuevo... Iniciar Sesion" button? No.
-   If Login is Right, we want the Overlay on the Left to say "Registrarse" (Sign Up).
-   Wait.
-   On Left (Overlay): "Hola Amigo! Registrarse".
-   On Right (Form): Login Inputs.
-*/
+.overlay-panel h1 { color: #FFFFFF; }
 
+/* Panel Izquierdo (Aparece cuando estamos en Registro) -> Botón "Iniciar Sesión" */
 .overlay-left {
-    transform: translateX(0);
-    /* Used when overlay is on Left? No, usually distinct transforms. */
-    /* Let's name them by function. */
-    /* This panel is for "Already have account? Sign In" -> Should appear when Register Form (Left) is active. */
-    /* So this panel sits on the Right side of the 200% overlay? or Left? */
-    /* Overlay is 200% width. */
     transform: translateX(-20%);
 }
 
@@ -259,6 +252,7 @@ form {
     transform: translateX(0);
 }
 
+/* Panel Derecho (Aparece cuando estamos en Login) -> Botón "Registrarse" */
 .overlay-right {
     right: 0;
     transform: translateX(0);
@@ -268,45 +262,9 @@ form {
     transform: translateX(20%);
 }
 
-
-.social-container {
-    margin: 20px 0;
-}
-
-.social-container a {
-    border: 1px solid #DDDDDD;
-    border-radius: 50%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 5px;
-    height: 40px;
-    width: 40px;
-}
-
-.input-group {
-    position: relative;
-    width: 100%;
-    margin: 8px 0;
-}
-
-.input-group input {
-    background-color: #eee;
-    border: none;
-    padding: 12px 15px;
-    padding-left: 40px;
-    width: 100%;
-    font-family: 'Inter', sans-serif;
-}
-
-.input-group i {
-    position: absolute;
-    left: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #888;
-}
-
+/* =========================================
+   7. FOOTER
+   ========================================= */
 footer {
     background-color: #222;
     color: #fff;
@@ -319,80 +277,58 @@ footer {
     z-index: 999;
 }
 
-form h1 {
-    color: var(--primary);
-}
-
-.overlay-panel h1 {
-    color: #FFFFFF;
-}
-
-@media (max-width: 768px) {
-    .container {
-        width: 100%;
-        min-height: 800px;
-        flex-direction: column;
-    }
-}
-
 /* =========================================
-   VERSIÓN MÓVIL: DESLIZAMIENTO VERTICAL
+   8. RESPONSIVE (MÓVIL)
    ========================================= */
-
 @media (max-width: 768px) {
-
-    /* 1. Reset del Contenedor Principal */
+    
+    /* Contenedor fluido */
     .container {
         width: 100%;
         min-height: 100vh;
         height: auto;
         border-radius: 0;
         box-shadow: none;
-        overflow-x: hidden; /* Evita scroll horizontal */
+        overflow-x: hidden;
         position: relative;
     }
 
-    /* 2. Configuración General de Formularios */
     .form-container {
         width: 100%;
-        height: 70%; /* Ocupan el 70% superior */
+        height: 70%; /* Formularios arriba */
         top: 0;
         left: 0;
-        padding: 0 20px; /* Padding reducido para evitar cortes */
+        padding: 0 20px;
     }
 
-    /* FIX CRÍTICO: Forzar ancho total y quitar desplazamientos laterales de PC */
+    /* Reseteo de posiciones de escritorio */
     .sign-in-container, 
     .sign-up-container {
         width: 100%;
         left: 0;
-        transform: none; /* Anula el translateX(100%) del PC */
+        transform: none; 
         position: absolute;
     }
 
-    /* 3. Lógica de VISIBILIDAD (Switcheo Login/Registro) */
-    
-    /* Estado por defecto: LOGIN Visible */
+    /* Visibilidad */
     .sign-in-container {
         z-index: 2;
         opacity: 1;
         pointer-events: all;
     }
     
-    /* Estado por defecto: REGISTRO Oculto */
     .sign-up-container {
         z-index: 1;
         opacity: 0;
         pointer-events: none;
     }
 
-    /* CUANDO ESTÁ ACTIVO EL REGISTRO (.right-panel-active) */
+    /* Estados Activos Móvil */
     .container.right-panel-active .sign-in-container {
         opacity: 0;
         z-index: 1;
         pointer-events: none;
-        /* Opcional: Pequeño efecto hacia arriba */
-        transform: translateY(-20px); 
+        transform: translateY(-20px);
     }
 
     .container.right-panel-active .sign-up-container {
@@ -403,61 +339,39 @@ form h1 {
         animation: show 0.6s;
     }
 
-    /* 4. Panel Naranja (Overlay) - SIEMPRE ABAJO */
+    /* Overlay abajo en móvil */
     .overlay-container {
         width: 100%;
-        height: 30%; /* El 30% restante abajo */
+        height: 30%; /* Botones abajo */
         top: auto;
         bottom: 0;
         left: 0;
         right: 0;
-        /* Quitamos movimientos complejos del contenedor */
-        transform: none !important; 
-        border-radius: 30px 30px 0 0; /* Redondeado solo arriba */
+        transform: none !important;
+        border-radius: 30px 30px 0 0;
     }
 
-    /* Fondo degradado deslizante dentro del panel inferior */
     .overlay {
-        width: 200%; /* Doble ancho para deslizar izquierda/derecha */
-        height: 100%;
-        left: -100%; /* Empezamos desplazados */
+        width: 200%;
+        left: -100%;
         transform: translateX(0);
-        transition: transform 0.6s ease-in-out;
     }
 
-    /* Al activar registro, deslizamos el fondo naranja */
     .container.right-panel-active .overlay {
         transform: translateX(50%);
     }
 
-    /* Textos dentro del panel naranja */
     .overlay-panel {
-        width: 50%; /* Cada panel ocupa la mitad del ancho del overlay (que es 200%) */
-        height: 100%;
+        width: 50%;
         padding: 0 15px;
-        flex-direction: column;
-        justify-content: center;
         top: 0;
-        /* Reseteamos posiciones absolutas raras */
-        right: auto; 
-        transform: translateX(0);
+        right: auto;
     }
 
-    /* Ajustes específicos de posición de los textos */
-    .overlay-left {
-        transform: translateX(0); 
-    }
-    .overlay-right {
-        right: 0;
-        transform: translateX(0);
-    }
+    /* Corrección de textos en móvil */
+    .overlay-left { transform: translateX(0); }
+    .overlay-right { right: 0; transform: translateX(0); }
     
-    /* Forzar que los textos y botones se vean bien */
-    .overlay-panel h1 {
-        font-size: 1.2rem;
-    }
-    .overlay-panel p {
-        font-size: 0.85rem;
-        margin: 10px 0 15px;
-    }
+    .overlay-panel h1 { font-size: 1.2rem; }
+    .overlay-panel p { font-size: 0.85rem; margin: 10px 0 15px; }
 }

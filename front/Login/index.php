@@ -1,12 +1,11 @@
 <?php
 	session_start(); 
 
-	// Recuperamos errores y datos viejos si vienen del procesador
+	// Lógica para recuperar datos (Sticky Form)
 	$errores = isset($_SESSION['errores']) ? $_SESSION['errores'] : [];
-	// Aquí estaba el error:
 	$datos = isset($_SESSION['datos_viejos']) ? $_SESSION['datos_viejos'] : [];
 
-	// Borramos la sesión para limpiar errores al recargar
+	// Limpiamos sesión
 	unset($_SESSION['errores']);
 	unset($_SESSION['datos_viejos']);
 ?>
@@ -22,6 +21,7 @@
 </head>
 
 <body class="login-page">
+	
 	<div class="container" id="container">
 		
 		<div class="form-container sign-up-container">
@@ -56,6 +56,7 @@
 				<?php if(isset($errores['usuario'])): ?>
 					<small style="color:red; font-size: 0.7em;"><?php echo $errores['usuario']; ?></small>
 				<?php endif; ?>
+
 				<div class="input-group">
 					<input type="password" name="contrasena" placeholder="Contraseña" required
 						style="<?php echo isset($errores['pass']) ? 'border: 2px solid red;' : ''; ?>"
@@ -73,8 +74,9 @@
 		<div class="form-container sign-in-container">
 			<form action="login_procesa.php" method="POST">
 				<h1>Iniciar Sesión</h1>
+				
 				<div class="input-group">
-					<input type="text" name="usuario" placeholder="usuario" required />
+					<input type="text" name="usuario" placeholder="Usuario" required />
 					<i class="fa-solid fa-user"></i>
 				</div>
 				<div class="input-group">
@@ -114,6 +116,7 @@
 		const signInButton = document.getElementById('signIn');
 		const container = document.getElementById('container');
 
+		// Eventos para cambiar la clase activa
 		signUpButton.addEventListener('click', () => {
 			container.classList.add("right-panel-active");
 		});
@@ -122,9 +125,7 @@
 			container.classList.remove("right-panel-active");
 		});
 
-		// FIX IMPORTANTE:
-		// Si PHP detecta errores en el registro ($errores no está vacío),
-		// forzamos al panel a mostrarse en el lado de "Registro" automáticamente.
+		// Si hay errores de PHP, mostramos el panel de registro automáticamente
 		<?php if (!empty($errores)): ?>
 			container.classList.add("right-panel-active");
 		<?php endif; ?>
