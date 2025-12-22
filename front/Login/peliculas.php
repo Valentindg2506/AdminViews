@@ -1,21 +1,528 @@
+<?php include "../inc/cabecera.php" ?>
 <?php
+	/**
+	 * -------------------------------------------------------------------------
+	 * BLOQUE PHP: SESIÓN Y CONFIGURACIÓN
+	 * -------------------------------------------------------------------------
+	 */
 	session_start();
- 
-	// Verificamos si la variable de sesión existe
-	// Si NO existe (!isset), redirigimos al login
+
+	// Seguridad: Si no hay usuario, fuera.
 	if (!isset($_SESSION['usuario'])) {
 		header("Location: intruso.php");
 		exit;
 	}
+
+	require_once __DIR__ . '/db.php'; 
+
+	/**
+	 * -------------------------------------------------------------------------
+	 * BLOQUE PHP: LÓGICA DE BACKEND (POST)
+	 * -------------------------------------------------------------------------
+	 */
+	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+		$accion = $_POST['accion'] ?? '';
+		$id = (int)($_POST['id'] ?? 0);
+		$usuario_id = $_SESSION['id_usuario'] ?? 1; 
+
+		// 1. MOVER A VISTAS
+		if ($accion === 'mover') {
+			$fecha = $_POST['fecha'];
+			$rating = $_POST['rating']; 
+			$stmt = $conexion->prepare("UPDATE contenido SET estado='Vistas', fecha_visualizacion=?, puntuacion=? WHERE id=?");
+			$stmt->bind_param("ssi", $fecha, $rating, $id);
+			$stmt->execute(); $stmt->close();
+
+		// 2. BORRAR
+		} elseif ($accion === 'borrar') {
+			$stmt = $conexion->prepare("DELETE FROM contenido WHERE id=?");
+			$stmt->bind_param("i", $id);
+			$stmt->execute(); $stmt->close();
+
+		// 3. AGREGAR PELÍCULA
+		} elseif ($accion === 'agregar') {
+			$titulo = $_POST['nombre'];
+			$comentario = $_POST['comentario'] ?? '';
+			$prioridad = $_POST['prioridad'] ?? 'Media';
+			$estado = $_POST['estado'] ?? 'Por_ver';
+			$img_url = $_POST['imagen_url'] ?? ''; 
+			$tipo = 'pelicula';
+
+			$sql = "INSERT INTO contenido (usuario_id, titulo, comentario, estado, tipo, nivel_prioridad, imagen_url) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			$stmt = $conexion->prepare($sql);
+			$stmt->bind_param("issssss", $usuario_id, $titulo, $comentario, $estado, $tipo, $prioridad, $img_url);
+			$stmt->execute(); $stmt->close();
+		}
+		
+		// Evitar reenvío de formulario
+		header("Location: peliculas.php");
+		exit;
+	}
+
+	/**
+	 * -------------------------------------------------------------------------
+	 * BLOQUE PHP: LÓGICA DE ORDENAMIENTO (GET)
+	 * -------------------------------------------------------------------------
+	 */
+	// Capturamos la opción de orden del desplegable (por defecto fecha)
+	$orden = $_GET['orden'] ?? 'fecha';
+	$sql_order = "ORDER BY id DESC"; // Default: Más recientes primero
+
+	if ($orden === 'alfa') {
+		$sql_order = "ORDER BY titulo ASC";
+	} elseif ($orden === 'prioridad') {
+		// Orden personalizado: Alta -> Media -> Baja
+		$sql_order = "ORDER BY FIELD(nivel_prioridad, 'Alta', 'Media', 'Baja')";
+	}
+
+	// Consulta final con el orden aplicado
+	$sql = "SELECT * FROM contenido WHERE tipo = 'pelicula' $sql_order";
+	$result = $conexion->query($sql);
+
+	$peliculas = [];
+	if ($result) {
+		while ($row = $result->fetch_assoc()) {
+			$peliculas[] = $row;
+		}
+	}
 ?>
 
-<?php include "../inc/cabecera.php" ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mis Películas</title>
+	
+	<link rel="stylesheet" href="style/style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+	<style>
+		/* --- LAYOUT GENERAL --- */
+		.dashboard-container {
+			display: grid; 
+			grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+			gap: 30px; 
+			padding: 20px; 
+			max-width: 1400px; 
+			margin: 0 auto;
+		}
 
+<<<<<<< HEAD
+		/* --- ENCABEZADOS DE COLUMNA (Ahora ambos naranjas) --- */
+		.columna-header {
+			padding: 15px; 
+			border-radius: 10px 10px 0 0; 
+			color: white;
+			font-weight: 800; 
+			text-align: center; 
+			text-transform: uppercase;
+			letter-spacing: 1px;
+			box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+			/* Mismo degradado naranja para ambos */
+			background: linear-gradient(to right, #FF7F50, #FF6347); 
+		}
+
+		/* Cuerpo blanco de las columnas */
+		.columna-body {
+			background: #fff; 
+			border: 1px solid #eee; 
+			border-top: none;
+			border-radius: 0 0 10px 10px; 
+			padding: 20px; 
+			min-height: 500px; /* Altura mínima para que se vea bien */
+			box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+		}
+
+		/* --- TARJETA DE PELÍCULA --- */
+		.card-peli {
+			display: flex; 
+			align-items: center;
+			background: #fff; 
+			border-radius: 12px; 
+			padding: 15px;
+			margin-bottom: 20px; 
+			box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+			border: 1px solid #f0f0f0;
+			border-left: 5px solid var(--primary); /* Borde lateral naranja */
+			transition: transform 0.2s, box-shadow 0.2s;
+		}
+		.card-peli:hover { 
+			transform: translateY(-3px); 
+			box-shadow: 0 8px 25px rgba(0,0,0,0.1); 
+		}
+
+		.card-img {
+			width: 60px; height: 90px; 
+			object-fit: cover; 
+			border-radius: 6px;
+			background-color: #eee; 
+			flex-shrink: 0;
+			box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+		}
+
+		.card-info { 
+			flex-grow: 1; 
+			padding-left: 20px; 
+			display: flex; 
+			flex-direction: column; 
+			justify-content: center; 
+		}
+		
+		.card-info h4 { margin: 0 0 5px; font-size: 1.1rem; color: #333; font-weight: 700; }
+		.card-info small { color: #888; font-size: 0.85rem; margin-bottom: 5px; display: block; }
+		
+		.badge-prioridad {
+			font-size: 0.75rem; 
+			padding: 4px 10px; 
+			border-radius: 20px;
+			background: #f3f3f3; 
+			color: #666; 
+			font-weight: 600;
+			width: fit-content;
+		}
+
+		/* --- BOTONES DE ACCIÓN (Estilo imagen) --- */
+		.card-actions { 
+			display: flex; 
+			gap: 10px; 
+			padding-left: 15px; 
+		}
+
+		/* Clase base para botones cuadrados */
+		.btn-cuadrado {
+			width: 40px; 
+			height: 40px; 
+			border-radius: 8px;
+			border: none;
+			display: flex; 
+			align-items: center; 
+			justify-content: center;
+			color: white; 
+			font-size: 1.1rem;
+			cursor: pointer;
+			transition: filter 0.2s, transform 0.1s;
+			margin: 0; /* Override del global button */
+			box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+		}
+		.btn-cuadrado:hover { filter: brightness(1.1); }
+		.btn-cuadrado:active { transform: scale(0.95); }
+
+		/* Colores específicos */
+		.btn-check { 
+			background: #2ecc71; /* Verde */
+			background: linear-gradient(to bottom right, #2ecc71, #27ae60);
+		}
+		.btn-trash { 
+			background: #e74c3c; /* Rojo */
+			background: linear-gradient(to bottom right, #e74c3c, #c0392b);
+		}
+
+		/* Estrellas amarillas */
+		.estrellas { color: #FFD700; font-size: 0.9rem; margin-top: 5px;}
+
+		/* --- BARRA SUPERIOR Y ORDENAR --- */
+		.top-bar {
+			display: flex; 
+			justify-content: space-between; 
+			align-items: center;
+			padding: 20px 40px; 
+			background: #fff; 
+			box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+			margin-bottom: 20px;
+		}
+
+		.controles-derecha {
+			display: flex;
+			gap: 15px;
+			align-items: center;
+		}
+
+		/* Select de ordenar personalizado */
+		.select-orden {
+			padding: 10px 15px;
+			border-radius: 20px;
+			border: 1px solid #ddd;
+			background: #fff;
+			font-family: 'Inter', sans-serif;
+			color: #555;
+			cursor: pointer;
+			outline: none;
+		}
+
+		/* --- SUGERENCIAS API y MODALES (Igual que antes) --- */
+		.suggestions-box {
+			position: absolute; top: 100%; left: 0; width: 100%;
+			background: #fff; border: 1px solid #ddd; border-top: none;
+			z-index: 1001; max-height: 200px; overflow-y: auto;
+			box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 0 0 8px 8px; display: none;
+		}
+		.sugg-item { padding: 10px; display: flex; align-items: center; cursor: pointer; border-bottom: 1px solid #eee; }
+		.sugg-item:hover { background-color: #f9f9f9; }
+		.sugg-item img { width: 40px; margin-right: 10px; border-radius: 4px; }
+		
+		.modal-fondo {
+			display: none; position: fixed; z-index: 2000; left: 0; top: 0;
+			width: 100%; height: 100%; overflow: auto;
+			background-color: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
+			align-items: center; justify-content: center;
+		}
+		.modal-contenido {
+			background-color: #fff; border-radius: 10px; padding: 30px;
+			width: 90%; max-width: 500px; position: relative;
+			box-shadow: 0 10px 25px rgba(0,0,0,0.2); animation: bajar 0.3s ease;
+		}
+		@keyframes bajar { from {transform: translateY(-20px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+		
+		.rating-group { display: flex; flex-direction: row-reverse; justify-content: center; margin: 15px 0; }
+		.rating-group input { display: none; }
+		.rating-group label { font-size: 30px; color: #ddd; cursor: pointer; transition: 0.2s; }
+		.rating-group input:checked ~ label, .rating-group label:hover, .rating-group label:hover ~ label { color: #FFD700; }
+	</style>
+</head>
+<body>
+
+	<div class="top-bar">
+		<div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">
+			<i class="fa-solid fa-clapperboard"></i> Mis Películas
+		</div>
+		
+		<div class="controles-derecha">
+			<form method="GET" style="background:none; padding:0; height:auto; display:block;">
+				<select name="orden" class="select-orden" onchange="this.form.submit()">
+					<option value="fecha" <?= $orden == 'fecha' ? 'selected' : '' ?>>📅 Fecha (Nuevo)</option>
+					<option value="alfa" <?= $orden == 'alfa' ? 'selected' : '' ?>>🔤 Alfabético (A-Z)</option>
+					<option value="prioridad" <?= $orden == 'prioridad' ? 'selected' : '' ?>>🔥 Prioridad</option>
+				</select>
+			</form>
+
+			<button id="btnAbrirModal" style="margin: 0;">
+				<i class="fa-solid fa-plus"></i> Nueva Película
+			</button>
+		</div>
+	</div>
+
+	<div class="dashboard-container">
+		
+		<div>
+			<div class="columna-header">Por Ver</div>
+			<div class="columna-body">
+				<?php foreach ($peliculas as $p): ?>
+					<?php if ($p['estado'] == 'Por_ver'): ?>
+					
+					<div class="card-peli">
+						<img src="<?= !empty($p['imagen_url']) ? htmlspecialchars($p['imagen_url']) : 'https://via.placeholder.com/60x90?text=Cine' ?>" 
+							 class="card-img" alt="cover">
+						
+						<div class="card-info">
+							<h4><?= htmlspecialchars($p['titulo']) ?></h4>
+							<small><?= htmlspecialchars($p['comentario']) ?></small>
+							<span class="badge-prioridad">Prioridad: <?= htmlspecialchars($p['nivel_prioridad'] ?? 'Media') ?></span>
+						</div>
+						
+						<div class="card-actions">
+							<button class="btn-cuadrado btn-check" onclick="abrirModalCalificar(<?= $p['id'] ?>)">
+								<i class="fa-solid fa-check"></i>
+							</button>
+							
+							<form method="POST" onsubmit="return confirm('¿Seguro que quieres borrarla?');" style="background:none; padding:0; height:auto;">
+								<input type="hidden" name="accion" value="borrar">
+								<input type="hidden" name="id" value="<?= $p['id'] ?>">
+								<button type="submit" class="btn-cuadrado btn-trash">
+									<i class="fa-solid fa-trash"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
+		</div>
+
+		<div>
+			<div class="columna-header">Vistas</div>
+			<div class="columna-body">
+				<?php foreach ($peliculas as $p): ?>
+					<?php if ($p['estado'] == 'Vistas'): ?>
+					
+					<div class="card-peli" style="opacity: 0.9;">
+						<img src="<?= !empty($p['imagen_url']) ? htmlspecialchars($p['imagen_url']) : 'https://via.placeholder.com/60x90?text=Cine' ?>" 
+							 class="card-img" alt="cover">
+						
+						<div class="card-info">
+							<h4><?= htmlspecialchars($p['titulo']) ?></h4>
+							<small>Visto: <?= htmlspecialchars($p['fecha_visualizacion']) ?></small>
+							
+							<?php $pts = (int)($p['puntuacion'] ?? 0); ?>
+							<div class="estrellas">
+								<?= str_repeat('<i class="fa-solid fa-star"></i>', $pts) ?>
+								<?= str_repeat('<i class="fa-regular fa-star"></i>', 5 - $pts) ?>
+							</div>
+						</div>
+						
+						<div class="card-actions">
+							<form method="POST" onsubmit="return confirm('¿Eliminar del historial?');" style="background:none; padding:0; height:auto;">
+								<input type="hidden" name="accion" value="borrar">
+								<input type="hidden" name="id" value="<?= $p['id'] ?>">
+								<button type="submit" class="btn-cuadrado btn-trash">
+									<i class="fa-solid fa-trash"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
+		</div>
+
+	</div>
+
+	<div id="modalAgregar" class="modal-fondo">
+		<div class="modal-contenido">
+			<span class="cerrar-modal" onclick="document.getElementById('modalAgregar').style.display='none'" 
+				  style="position:absolute; right:20px; top:15px; cursor:pointer; font-size:1.5rem;">&times;</span>
+			
+			<form action="" method="POST">
+				<input type="hidden" name="accion" value="agregar">
+				<h2 style="text-align:center; color:var(--primary); margin-bottom:20px;">Nueva Película</h2>
+
+				<div id="preview_container" style="text-align:center; display:none; margin-bottom:15px;">
+					<img id="preview_img" src="" style="width:100px; border-radius:5px; box-shadow:0 4px 10px rgba(0,0,0,0.2);">
+				</div>
+				<input type="hidden" name="imagen_url" id="imagen_input">
+
+				<div class="input-group">
+					<input type="text" name="nombre" id="titulo_input" placeholder="Buscar título..." autocomplete="off" required />
+					<i class="fa-solid fa-magnifying-glass"></i>
+					<div id="suggestions" class="suggestions-box"></div>
+				</div>
+
+				<div class="input-group">
+					<input type="text" name="comentario" placeholder="Comentario breve" />
+					<i class="fa-solid fa-comment"></i>
+				</div>
+
+				<div class="input-group">
+					<select name="prioridad">
+						<option value="Alta">Prioridad Alta</option>
+						<option value="Media" selected>Prioridad Media</option>
+						<option value="Baja">Prioridad Baja</option>
+					</select>
+					<i class="fa-solid fa-layer-group"></i>
+				</div>
+
+				<button type="submit" style="width:100%; margin-top:10px;">Guardar</button>
+			</form>
+		</div>
+	</div>
+
+	<div id="modalCalificar" class="modal-fondo">
+		<div class="modal-contenido" style="text-align: center;">
+			<h3 style="color: #333;">¿Ya la viste?</h3>
+			<p>Ponle nota y fecha</p>
+			
+			<form method="POST">
+				<input type="hidden" name="accion" value="mover">
+				<input type="hidden" name="id" id="idPeliCalificar">
+
+				<div class="input-group">
+					<input type="date" name="fecha" required value="<?php echo date('Y-m-d'); ?>">
+					<i class="fa-solid fa-calendar"></i>
+				</div>
+
+				<div class="rating-group">
+					<input type="radio" name="rating" value="5" id="r5"><label for="r5">★</label>
+					<input type="radio" name="rating" value="4" id="r4"><label for="r4">★</label>
+					<input type="radio" name="rating" value="3" id="r3"><label for="r3">★</label>
+					<input type="radio" name="rating" value="2" id="r2"><label for="r2">★</label>
+					<input type="radio" name="rating" value="1" id="r1"><label for="r1">★</label>
+				</div>
+
+				<div style="display:flex; gap:10px; justify-content:center;">
+					<button type="submit">Guardar</button>
+					<button type="button" class="ghost" onclick="document.getElementById('modalCalificar').style.display='none'" style="border:1px solid #aaa; color:#555;">Cancelar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<script>
+		// MODALES
+		const modalAgregar = document.getElementById('modalAgregar');
+		const modalCalificar = document.getElementById('modalCalificar');
+		const btnAbrir = document.getElementById('btnAbrirModal');
+
+		btnAbrir.addEventListener('click', () => { modalAgregar.style.display = 'flex'; });
+
+		function abrirModalCalificar(id) {
+			document.getElementById('idPeliCalificar').value = id;
+			modalCalificar.style.display = 'flex';
+		}
+
+		window.onclick = function(event) {
+			if (event.target == modalAgregar) modalAgregar.style.display = "none";
+			if (event.target == modalCalificar) modalCalificar.style.display = "none";
+		}
+
+		// API TMDB
+		const API_KEY = '3fd2be6f0c70a2a598f084ddfb75487c'; 
+		const tituloInput = document.getElementById('titulo_input');
+		const suggestionsBox = document.getElementById('suggestions');
+		const imagenInput = document.getElementById('imagen_input');
+		const previewContainer = document.getElementById('preview_container');
+		const previewImg = document.getElementById('preview_img');
+
+		if (tituloInput) {
+			tituloInput.addEventListener('input', async function() {
+				const query = this.value.trim();
+				if (query.length < 3) { suggestionsBox.style.display = 'none'; return; }
+
+				try {
+					const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&query=${query}`);
+					const data = await res.json();
+					suggestionsBox.innerHTML = '';
+
+					if (data.results && data.results.length > 0) {
+						suggestionsBox.style.display = 'block';
+						data.results.slice(0, 5).forEach(movie => {
+							const div = document.createElement('div');
+							div.className = 'sugg-item';
+							
+							const title = movie.title;
+							const year = movie.release_date ? movie.release_date.split('-')[0] : '';
+							const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w92${movie.poster_path}` : '';
+							const fullPoster = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '';
+
+							div.innerHTML = `<img src="${poster}" alt="img"><div><strong>${title}</strong> <small>(${year})</small></div>`;
+
+							div.addEventListener('click', () => {
+								tituloInput.value = title;
+								imagenInput.value = fullPoster; 
+								if(fullPoster) {
+									previewImg.src = fullPoster;
+									previewContainer.style.display = 'block';
+								}
+								suggestionsBox.style.display = 'none';
+							});
+							suggestionsBox.appendChild(div);
+						});
+					} else { suggestionsBox.style.display = 'none'; }
+				} catch (e) { console.error(e); }
+			});
+		}
+	</script>
+</body>
+<?php include "../inc/piedepagina.php" ?>
+
+=======
 			
 <?php include "../inc/piedepagina.php" ?>
 
 
 
 
+
+>>>>>>> 2a0169bdfde23a4d41ee7acd0cd5c4abd4be161d
 
