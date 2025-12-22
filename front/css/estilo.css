@@ -1,8 +1,7 @@
-/* //////////////////////////////////////////////////////////////////// HEADER //////////////////////////////////////////////////////////////////// */
- 
 /* --- RESET GENERAL --- */
 
 body {
+	background: linear-gradient(to right, rgb(250, 235, 215), rgb(255, 250, 240));
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -13,6 +12,8 @@ body {
     flex-direction: column; /* Coloca los elementos uno debajo de otro */
     min-height: 100vh;      /* Obliga al body a medir AL MENOS el 100% de la altura de la pantalla */
 }
+
+/* //////////////////////////////////////////////////////////////////// HEADER //////////////////////////////////////////////////////////////////// */
  
 /* --- ESTILOS DE LA CABECERA --- */
 header {
