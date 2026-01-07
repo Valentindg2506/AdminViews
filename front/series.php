@@ -1,4 +1,4 @@
-<?php include "inc/cabecera.php" ?>
+
 <?php
 	/**
 	 * -------------------------------------------------------------------------
@@ -7,12 +7,13 @@
 	 */
 	session_start();
 
+	// --- 1. SEGURIDAD: CONTROL DE SESIÓN ---
 	if (!isset($_SESSION['usuario'])) {
-		header("Location: intruso.php");
+		header("Location: intruso.php"); // Si no es usuario, fuera.
 		exit;
 	}
 
-	require_once __DIR__ . 'inc/db.php'; 
+	require_once 'inc/db.php'; 
 
 	/**
 	 * -------------------------------------------------------------------------
@@ -20,8 +21,8 @@
 	 * -------------------------------------------------------------------------
 	 */
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		$accion = $_POST['accion'] ?? '';
-		$id = (int)($_POST['id'] ?? 0);
+		$accion = $_POST['accion'] ?? ''; // Qué botón pulsó el usuario
+		$id = (int)($_POST['id'] ?? 0);   // ID de la serie afectada
 		$usuario_id = $_SESSION['id_usuario'] ?? 1; 
 
 		// 1. EMPEZAR A VER (Mover de 'Por_ver' -> 'Viendo')
@@ -54,7 +55,7 @@
 			$estado = $_POST['estado'] ?? 'Por_ver';
 			$img_url = $_POST['imagen_url'] ?? ''; 
 			
-			// IMPORTANTE: Tipo fijo como 'serie'
+			// Forzamos "tipo = serie" para diferenciarlo en la tabla única
 			$tipo = 'serie';
 
 			$sql = "INSERT INTO contenido (usuario_id, titulo, comentario, estado, tipo, nivel_prioridad, imagen_url) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -464,4 +465,4 @@
 		}
 	</script>
 </body>
-<?php include "../inc/piedepagina.php" ?>
+

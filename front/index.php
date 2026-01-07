@@ -1,23 +1,35 @@
 <?php
-	session_start(); 
+/**
+ * 
+ * PÁGINA DE ATERRIZAJE (LOGIN / REGISTRO)
+ * 
+ * Propósito: 
+ * 1. Mostrar formuarios de acceso y creación de cuenta.
+ * 2. Gestionar la persistencia de datos (Sticky Form) si falla el registro.
+ */
+session_start(); 
 
-	// Lógica para recuperar datos (Sticky Form)
-	$errores = isset($_SESSION['errores']) ? $_SESSION['errores'] : [];
-	$datos = isset($_SESSION['datos_viejos']) ? $_SESSION['datos_viejos'] : [];
+// Recuperamos errores y datos previos si existen en la sesión (vienen de registro_procesa.php)
+// Esto permite que si te equivocas, no tengas que volver a escribir todo el formulario.
+$errores = isset($_SESSION['errores']) ? $_SESSION['errores'] : [];
+$datos = isset($_SESSION['datos_viejos']) ? $_SESSION['datos_viejos'] : [];
 
-	// Limpiamos sesión
-	unset($_SESSION['errores']);
-	unset($_SESSION['datos_viejos']);
+// Limpiamos la sesión: Si recargas la página (F5), los errores desaparecen.
+unset($_SESSION['errores']);
+unset($_SESSION['datos_viejos']);
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
 	<link rel="stylesheet" href="style/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-	<title>AdminViews</title>
+	
+	<title>AdminViews - Acceso</title>
 </head>
 
 <body class="login-page">
@@ -25,7 +37,7 @@
 	<div class="container" id="container">
 		
 		<div class="form-container sign-up-container">
-			<form action="registro_procesa.php" method="POST">
+			<form action="controladores/registro_procesa.php" method="POST">
 				<h1>Crear Cuenta</h1>
 				
 				<div class="input-group">
@@ -38,6 +50,7 @@
 				<div class="input-group">
 					<input type="email" name="email" placeholder="Email" required
 						value="<?php echo isset($datos['email']) ? htmlspecialchars($datos['email']) : ''; ?>"
+						/* Feedback visual: Borde rojo si hay error específico en email */
 						style="<?php echo isset($errores['email']) ? 'border: 2px solid red;' : ''; ?>"
 					/>
 					<i class="fa-solid fa-envelope"></i>
@@ -79,6 +92,7 @@
 					<input type="text" name="usuario" placeholder="Usuario" required />
 					<i class="fa-solid fa-user"></i>
 				</div>
+
 				<div class="input-group">
 					<input type="password" name="contrasena" placeholder="Contraseña" required
 						<?php if(isset($_GET['error'])) echo 'style="border: 2px solid red;"'; ?>
@@ -112,20 +126,28 @@
 	</div>
 
 	<script>
+		// Referencias al DOM
 		const signUpButton = document.getElementById('signUp');
 		const signInButton = document.getElementById('signIn');
 		const container = document.getElementById('container');
 
-		// Eventos para cambiar la clase activa
+		// 1. Evento para mostrar panel de Registro
 		signUpButton.addEventListener('click', () => {
 			container.classList.add("right-panel-active");
 		});
 
+		// 2. Evento para mostrar panel de Login
 		signInButton.addEventListener('click', () => {
 			container.classList.remove("right-panel-active");
 		});
 
-		// Si hay errores de PHP, mostramos el panel de registro automáticamente
+		/**
+		 * LÓGICA MIXTA PHP/JS:
+		 * Si PHP detecta que hubo errores en el registro ($errores no está vacío),
+		 * inyectamos JS para activar el panel de registro automáticamente.
+		 * Esto evita que el usuario tenga que volver a hacer clic en "Registrarse"
+		 * para ver sus errores.
+		 */
 		<?php if (!empty($errores)): ?>
 			container.classList.add("right-panel-active");
 		<?php endif; ?>

@@ -1,12 +1,20 @@
 <?php
-	session_start();
+/**
+ * -----------------------------------------------------------------------------
+ * DASHBOARD PRINCIPAL (HOME)
+ * -----------------------------------------------------------------------------
+ * Página de bienvenida tras loguearse.
+ */
+session_start();
  
-	// Verificamos si la variable de sesión existe
-	// Si NO existe (!isset), redirigimos al login
-	if (!isset($_SESSION['usuario'])) {
-		header("Location: intruso.php");
-		exit;
-	}
+// --- SEGURIDAD DE SESIÓN ---
+// Verificamos si la variable de sesión existe.
+// Si NO existe (!isset), significa que el usuario no se ha logueado.
+// Lo expulsamos inmediatamente a "intruso.php".
+if (!isset($_SESSION['usuario'])) {
+    header("Location: intruso.php");
+    exit;
+}
 ?>
  
 <!doctype html>
@@ -15,7 +23,7 @@
 		<title>AdminViews</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="icon" type="image/png" href="../img/adminviews_favicon.png">
+		<link rel="icon" type="image/png" href="img/adminviews_favicon.png">
 		<link rel="stylesheet" href="css/estilo.css">
 	</head>
 	<body>

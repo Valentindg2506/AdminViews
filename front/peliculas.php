@@ -1,4 +1,4 @@
-<?php include "inc/cabecera.php" ?>
+
 <?php
 	/**
 	 * -------------------------------------------------------------------------
@@ -13,7 +13,7 @@
 		exit;
 	}
 
-	require_once __DIR__ . '/db.php'; 
+	require_once 'inc/db.php'; 
 
 	/**
 	 * -------------------------------------------------------------------------
@@ -21,7 +21,7 @@
 	 * -------------------------------------------------------------------------
 	 */
 	if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-		$accion = $_POST['accion'] ?? '';
+		$accion = $_POST['accion'] ?? ''; // Leer acción del formulario
 		$id = (int)($_POST['id'] ?? 0);
 		$usuario_id = $_SESSION['id_usuario'] ?? 1; 
 
@@ -46,7 +46,7 @@
 			$prioridad = $_POST['prioridad'] ?? 'Media';
 			$estado = $_POST['estado'] ?? 'Por_ver';
 			$img_url = $_POST['imagen_url'] ?? ''; 
-			$tipo = 'pelicula';
+			$tipo = 'pelicula'; // CLAVE: Diferenciamos de 'serie'
 
 			$sql = "INSERT INTO contenido (usuario_id, titulo, comentario, estado, tipo, nivel_prioridad, imagen_url) VALUES (?, ?, ?, ?, ?, ?, ?)";
 			$stmt = $conexion->prepare($sql);
@@ -108,10 +108,7 @@
 			margin: 0 auto;
 		}
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> a1898d6fdc45bbe873a121e11ce8032de2db5f02
+
 		/* --- ENCABEZADOS DE COLUMNA (Ahora ambos naranjas) --- */
 		.columna-header {
 			padding: 15px; 
@@ -517,18 +514,6 @@
 		}
 	</script>
 </body>
-<?php include "inc/piedepagina.php" ?>
-
-<<<<<<< HEAD
-=======
-=======
-			
-<?php include "inc/piedepagina.php" ?>
 
 
 
-
-
->>>>>>> 2a0169bdfde23a4d41ee7acd0cd5c4abd4be161d
-
->>>>>>> a1898d6fdc45bbe873a121e11ce8032de2db5f02
