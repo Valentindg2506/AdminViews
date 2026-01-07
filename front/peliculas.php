@@ -1,4 +1,3 @@
-
 <?php
 	/**
 	 * -------------------------------------------------------------------------
@@ -86,16 +85,8 @@
 		}
 	}
 ?>
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Mis Películas</title>
-	
-	<link rel="stylesheet" href="style/style.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<?php include "inc/cabecera.php" ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 	<style>
 		/* --- LAYOUT GENERAL --- */
@@ -279,14 +270,12 @@
 		.rating-group label { font-size: 30px; color: #ddd; cursor: pointer; transition: 0.2s; }
 		.rating-group input:checked ~ label, .rating-group label:hover, .rating-group label:hover ~ label { color: #FFD700; }
 	</style>
-</head>
-<body>
 
 	<div class="top-bar">
 		<div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">
 			<i class="fa-solid fa-clapperboard"></i> Mis Películas
 		</div>
-		
+		<!-- ORDEN DE PELICULAS -->
 		<div class="controles-derecha">
 			<form method="GET" style="background:none; padding:0; height:auto; display:block;">
 				<select name="orden" class="select-orden" onchange="this.form.submit()">
@@ -295,15 +284,15 @@
 					<option value="prioridad" <?= $orden == 'prioridad' ? 'selected' : '' ?>>🔥 Prioridad</option>
 				</select>
 			</form>
-
-			<button id="btnAbrirModal" style="margin: 0;">
-				<i class="fa-solid fa-plus"></i> Nueva Película
-			</button>
+		<!-- AÑADIR PELICULAS -->
+			<a href="formulario_pelicula.php" class="btn-agregar-diseno" style="margin: 0; text-decoration:none;">
+				<span class="plus-icon"><i class="fa-solid fa-plus"></i></span> Nueva Película
+			</a>
 		</div>
 	</div>
 
 	<div class="dashboard-container">
-		
+		<!-- TARJETA POR VER -->
 		<div>
 			<div class="columna-header">Por Ver</div>
 			<div class="columna-body">
@@ -339,7 +328,7 @@
 				<?php endforeach; ?>
 			</div>
 		</div>
-
+		<!-- TARJETA VISTAS -->
 		<div>
 			<div class="columna-header">Vistas</div>
 			<div class="columna-body">
@@ -419,101 +408,63 @@
 	</div>
 
 	<div id="modalCalificar" class="modal-fondo">
-		<div class="modal-contenido" style="text-align: center;">
-			<h3 style="color: #333;">¿Ya la viste?</h3>
-			<p>Ponle nota y fecha</p>
+		<div class="modal-contenido" style="text-align: center; border-radius: 15px; padding: 40px; border-top: 6px solid #FF4500;">
+			<h2 style="color: #FF4500; font-weight: 800; margin-top: 0; margin-bottom: 5px; font-size: 1.8rem;">
+				<i class="fa-solid fa-award"></i> ¿Ya la viste?
+			</h2>
+			<p style="color: #666; margin-bottom: 25px; font-size: 0.95rem;">
+				¡Genial! Regístralo en tu historial.
+			</p>
 			
 			<form method="POST">
 				<input type="hidden" name="accion" value="mover">
 				<input type="hidden" name="id" id="idPeliCalificar">
 
-				<div class="input-group">
-					<input type="date" name="fecha" required value="<?php echo date('Y-m-d'); ?>">
-					<i class="fa-solid fa-calendar"></i>
+				<div class="input-group" style="text-align: left;">
+					<label style="display:block; font-size:0.8rem; font-weight:bold; color:#333; margin-bottom:5px;">Fecha de visualización:</label>
+					<input type="date" name="fecha" required value="<?php echo date('Y-m-d'); ?>" 
+						   style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: inherit;">
 				</div>
 
-				<div class="rating-group">
-					<input type="radio" name="rating" value="5" id="r5"><label for="r5">★</label>
-					<input type="radio" name="rating" value="4" id="r4"><label for="r4">★</label>
-					<input type="radio" name="rating" value="3" id="r3"><label for="r3">★</label>
-					<input type="radio" name="rating" value="2" id="r2"><label for="r2">★</label>
-					<input type="radio" name="rating" value="1" id="r1"><label for="r1">★</label>
+				<div style="margin: 20px 0;">
+					<label style="display:block; font-size:0.8rem; font-weight:bold; color:#333; margin-bottom:5px;">Tu Valoración:</label>
+					<div class="rating-group" style="margin: 0; justify-content: center; gap: 5px;">
+						<input type="radio" name="rating" value="5" id="r5"><label for="r5" title="¡Obra maestra!">★</label>
+						<input type="radio" name="rating" value="4" id="r4"><label for="r4" title="Muy buena">★</label>
+						<input type="radio" name="rating" value="3" id="r3"><label for="r3" title="Buena">★</label>
+						<input type="radio" name="rating" value="2" id="r2"><label for="r2" title="Regular">★</label>
+						<input type="radio" name="rating" value="1" id="r1"><label for="r1" title="Mala">★</label>
+					</div>
 				</div>
 
-				<div style="display:flex; gap:10px; justify-content:center;">
-					<button type="submit">Guardar</button>
-					<button type="button" class="ghost" onclick="document.getElementById('modalCalificar').style.display='none'" style="border:1px solid #aaa; color:#555;">Cancelar</button>
+				<div style="display:flex; gap:15px; justify-content:center; margin-top: 10px;">
+					<button type="submit" style="flex: 1; border-radius: 50px; background: linear-gradient(to right, #ff4e00, #ff7f50); box-shadow: 0 4px 6px rgba(255, 69, 0, 0.2);">
+						Guardar
+					</button>
+					<button type="button" onclick="document.getElementById('modalCalificar').style.display='none'" 
+							style="flex: 1; background: #f0f0f0; color: #555; border: 1px solid #ccc; border-radius: 50px; padding: 12px; font-weight: bold; cursor: pointer;">
+						Cancelar
+					</button>
 				</div>
 			</form>
 		</div>
 	</div>
 
 	<script>
-		// MODALES
-		const modalAgregar = document.getElementById('modalAgregar');
+		// MODAL CALIFICAR
 		const modalCalificar = document.getElementById('modalCalificar');
-		const btnAbrir = document.getElementById('btnAbrirModal');
-
-		btnAbrir.addEventListener('click', () => { modalAgregar.style.display = 'flex'; });
-
+		
 		function abrirModalCalificar(id) {
 			document.getElementById('idPeliCalificar').value = id;
 			modalCalificar.style.display = 'flex';
 		}
 
 		window.onclick = function(event) {
-			if (event.target == modalAgregar) modalAgregar.style.display = "none";
 			if (event.target == modalCalificar) modalCalificar.style.display = "none";
 		}
-
-		// API TMDB
-		const API_KEY = '3fd2be6f0c70a2a598f084ddfb75487c'; 
-		const tituloInput = document.getElementById('titulo_input');
-		const suggestionsBox = document.getElementById('suggestions');
-		const imagenInput = document.getElementById('imagen_input');
-		const previewContainer = document.getElementById('preview_container');
-		const previewImg = document.getElementById('preview_img');
-
-		if (tituloInput) {
-			tituloInput.addEventListener('input', async function() {
-				const query = this.value.trim();
-				if (query.length < 3) { suggestionsBox.style.display = 'none'; return; }
-
-				try {
-					const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=es-ES&query=${query}`);
-					const data = await res.json();
-					suggestionsBox.innerHTML = '';
-
-					if (data.results && data.results.length > 0) {
-						suggestionsBox.style.display = 'block';
-						data.results.slice(0, 5).forEach(movie => {
-							const div = document.createElement('div');
-							div.className = 'sugg-item';
-							
-							const title = movie.title;
-							const year = movie.release_date ? movie.release_date.split('-')[0] : '';
-							const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w92${movie.poster_path}` : '';
-							const fullPoster = movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : '';
-
-							div.innerHTML = `<img src="${poster}" alt="img"><div><strong>${title}</strong> <small>(${year})</small></div>`;
-
-							div.addEventListener('click', () => {
-								tituloInput.value = title;
-								imagenInput.value = fullPoster; 
-								if(fullPoster) {
-									previewImg.src = fullPoster;
-									previewContainer.style.display = 'block';
-								}
-								suggestionsBox.style.display = 'none';
-							});
-							suggestionsBox.appendChild(div);
-						});
-					} else { suggestionsBox.style.display = 'none'; }
-				} catch (e) { console.error(e); }
-			});
-		}
 	</script>
-</body>
+
+<?php include "inc/piedepagina.php" ?>
 
 
 

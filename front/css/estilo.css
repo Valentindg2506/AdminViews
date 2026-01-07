@@ -371,14 +371,14 @@ footer p {
 .plus-icon {
     border: 2px solid white;
     border-radius: 50%;
-    width: 18px;
-    height: 18px;
+    width: 20px; /* Un pelín más grande */
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    line-height: 0;
-    padding-bottom: 2px; /* Ajuste visual */
+    line-height: 1; /* Reset del line-height */
+    margin-right: 2px;
 }
 
 
@@ -478,4 +478,98 @@ footer p {
     cursor: pointer;
     text-decoration: underline;
     margin-right: 10px;
+}
+
+/* --- CARROUSEL NETFLIX STYLE --- */
+.netflix-section {
+    padding: 20px 40px;
+    margin-bottom: 20px;
+}
+
+.netflix-section h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-left: 5px solid #FF4500;
+    padding-left: 15px;
+}
+
+.carousel-container {
+    position: relative;
+    width: 100%;
+}
+
+.carousel {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    padding: 20px 5px; /* Padding vertical para el efecto hover */
+    scroll-behavior: smooth;
+}
+
+/* Ocultar barra de scroll pero mantener funcionalidad */
+.carousel::-webkit-scrollbar {
+    height: 8px;
+}
+.carousel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+.carousel::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+.carousel::-webkit-scrollbar-thumb:hover {
+    background: #FF4500;
+}
+
+.poster-card {
+    flex: 0 0 auto; /* No encoger, no crecer */
+    width: 160px;
+    position: relative;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    background: #000; /* Fondo negro si no carga img */
+}
+
+.poster-card img {
+    width: 100%;
+    height: 240px; /* Altura fija tipo poster */
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.poster-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    z-index: 10;
+}
+
+.poster-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 15px 10px 10px;
+    border-radius: 0 0 8px 8px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.poster-card:hover .poster-overlay {
+    opacity: 1;
+}
+
+.poster-title {
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

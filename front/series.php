@@ -94,13 +94,7 @@
 	}
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Mis Series</title>
-	<link rel="stylesheet" href="style/style.css">
+<?php include "inc/cabecera.php" ?>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 	<style>
@@ -205,9 +199,9 @@
 		.rating-group input { display: none; }
 		.rating-group label { font-size: 30px; color: #ddd; cursor: pointer; transition: 0.2s; }
 		.rating-group input:checked ~ label, .rating-group label:hover, .rating-group label:hover ~ label { color: #FFD700; }
+		.rating-group label { font-size: 30px; color: #ddd; cursor: pointer; transition: 0.2s; }
+		.rating-group input:checked ~ label, .rating-group label:hover, .rating-group label:hover ~ label { color: #FFD700; }
 	</style>
-</head>
-<body>
 
 	<div class="top-bar">
 		<div style="font-size: 1.5rem; font-weight: 800; color: var(--primary);">
@@ -222,9 +216,9 @@
 					<option value="prioridad" <?= $orden == 'prioridad' ? 'selected' : '' ?>>🔥 Prioridad</option>
 				</select>
 			</form>
-			<button id="btnAbrirModal" style="margin: 0;">
-				<i class="fa-solid fa-plus"></i> Nueva Serie
-			</button>
+			<a href="formulario_serie.php" class="btn-agregar-diseno" style="margin: 0; text-decoration:none;">
+				<span class="plus-icon"><i class="fa-solid fa-plus"></i></span> Nueva Serie
+			</a>
 		</div>
 	</div>
 
@@ -321,148 +315,62 @@
 
 	</div>
 
-	<div id="modalAgregar" class="modal-fondo">
-		<div class="modal-contenido">
-			<span class="cerrar-modal" onclick="document.getElementById('modalAgregar').style.display='none'" style="position:absolute; right:20px; top:15px; cursor:pointer; font-size:1.5rem;">&times;</span>
-			<form action="" method="POST">
-				<input type="hidden" name="accion" value="agregar">
-				<h2 style="text-align:center; color:var(--primary); margin-bottom:20px;">Nueva Serie</h2>
 
-				<div id="preview_container" style="text-align:center; display:none; margin-bottom:15px;">
-					<img id="preview_img" src="" style="width:100px; border-radius:5px; box-shadow:0 4px 10px rgba(0,0,0,0.2);">
-				</div>
-				<input type="hidden" name="imagen_url" id="imagen_input">
-
-				<div class="input-group">
-					<input type="text" name="nombre" id="titulo_input" placeholder="Buscar serie TV..." autocomplete="off" required />
-					<i class="fa-solid fa-magnifying-glass"></i>
-					<div id="suggestions" class="suggestions-box"></div>
-				</div>
-
-				<div class="input-group">
-					<input type="text" name="comentario" placeholder="Comentario breve" />
-					<i class="fa-solid fa-comment"></i>
-				</div>
-
-				<div class="input-group">
-					<select name="prioridad">
-						<option value="Alta">Prioridad Alta</option>
-						<option value="Media" selected>Prioridad Media</option>
-						<option value="Baja">Prioridad Baja</option>
-					</select>
-					<i class="fa-solid fa-layer-group"></i>
-				</div>
-				
-				<div class="input-group">
-					<select name="estado">
-						<option value="Por_ver" selected>Por ver</option>
-						<option value="Viendo">Viendo</option>
-						<option value="Vistas">Vista</option>
-					</select>
-					<i class="fa-solid fa-eye"></i>
-				</div>
-
-				<button type="submit" style="width:100%; margin-top:10px;">Guardar</button>
-			</form>
-		</div>
-	</div>
 
 	<div id="modalCalificar" class="modal-fondo">
-		<div class="modal-contenido" style="text-align: center;">
-			<h3 style="color: #333;">¡Serie Terminada!</h3>
-			<p>Ponle nota y fecha</p>
+		<div class="modal-contenido" style="text-align: center; border-radius: 15px; padding: 40px; border-top: 6px solid #FF4500;">
+			<h2 style="color: #FF4500; font-weight: 800; margin-top: 0; margin-bottom: 5px; font-size: 1.8rem;">
+				<i class="fa-solid fa-flag-checkered"></i> ¡Serie Terminada!
+			</h2>
+			<p style="color: #666; margin-bottom: 25px; font-size: 0.95rem;">
+				Felicidades, otra más a la lista.
+			</p>
 			
 			<form method="POST">
 				<input type="hidden" name="accion" value="terminar">
 				<input type="hidden" name="id" id="idPeliCalificar">
 
-				<div class="input-group">
-					<input type="date" name="fecha" required value="<?php echo date('Y-m-d'); ?>">
-					<i class="fa-solid fa-calendar"></i>
+				<div class="input-group" style="text-align: left;">
+					<label style="display:block; font-size:0.8rem; font-weight:bold; color:#333; margin-bottom:5px;">Fecha de finalización:</label>
+					<input type="date" name="fecha" required value="<?php echo date('Y-m-d'); ?>" 
+						   style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-family: inherit;">
 				</div>
 
-				<div class="rating-group">
-					<input type="radio" name="rating" value="5" id="r5"><label for="r5">★</label>
-					<input type="radio" name="rating" value="4" id="r4"><label for="r4">★</label>
-					<input type="radio" name="rating" value="3" id="r3"><label for="r3">★</label>
-					<input type="radio" name="rating" value="2" id="r2"><label for="r2">★</label>
-					<input type="radio" name="rating" value="1" id="r1"><label for="r1">★</label>
+				<div style="margin: 20px 0;">
+					<label style="display:block; font-size:0.8rem; font-weight:bold; color:#333; margin-bottom:5px;">Nota Final:</label>
+					<div class="rating-group" style="margin: 0; justify-content: center; gap: 5px;">
+						<input type="radio" name="rating" value="5" id="r5"><label for="r5" title="¡Obra maestra!">★</label>
+						<input type="radio" name="rating" value="4" id="r4"><label for="r4" title="Muy buena">★</label>
+						<input type="radio" name="rating" value="3" id="r3"><label for="r3" title="Buena">★</label>
+						<input type="radio" name="rating" value="2" id="r2"><label for="r2" title="Regular">★</label>
+						<input type="radio" name="rating" value="1" id="r1"><label for="r1" title="Mala">★</label>
+					</div>
 				</div>
 
-				<div style="display:flex; gap:10px; justify-content:center;">
-					<button type="submit">Guardar</button>
-					<button type="button" class="ghost" onclick="document.getElementById('modalCalificar').style.display='none'" style="border:1px solid #aaa; color:#555;">Cancelar</button>
+				<div style="display:flex; gap:15px; justify-content:center; margin-top: 10px;">
+					<button type="submit" style="flex: 1; border-radius: 50px; background: linear-gradient(to right, #ff4e00, #ff7f50); box-shadow: 0 4px 6px rgba(255, 69, 0, 0.2);">
+						Guardar
+					</button>
+					<button type="button" onclick="document.getElementById('modalCalificar').style.display='none'" 
+							style="flex: 1; background: #f0f0f0; color: #555; border: 1px solid #ccc; border-radius: 50px; padding: 12px; font-weight: bold; cursor: pointer;">
+						Cancelar
+					</button>
 				</div>
 			</form>
 		</div>
 	</div>
 
 	<script>
-		// MODALES
-		const modalAgregar = document.getElementById('modalAgregar');
+		// MODAL CALIFICAR
 		const modalCalificar = document.getElementById('modalCalificar');
-		const btnAbrir = document.getElementById('btnAbrirModal');
-
-		btnAbrir.addEventListener('click', () => { modalAgregar.style.display = 'flex'; });
-
+		
 		function abrirModalCalificar(id) {
 			document.getElementById('idPeliCalificar').value = id;
 			modalCalificar.style.display = 'flex';
 		}
 
 		window.onclick = function(event) {
-			if (event.target == modalAgregar) modalAgregar.style.display = "none";
 			if (event.target == modalCalificar) modalCalificar.style.display = "none";
 		}
-
-		// API TMDB (MODO SERIE - search/tv)
-		const API_KEY = '3fd2be6f0c70a2a598f084ddfb75487c'; 
-		const tituloInput = document.getElementById('titulo_input');
-		const suggestionsBox = document.getElementById('suggestions');
-		const imagenInput = document.getElementById('imagen_input');
-		const previewContainer = document.getElementById('preview_container');
-		const previewImg = document.getElementById('preview_img');
-
-		if (tituloInput) {
-			tituloInput.addEventListener('input', async function() {
-				const query = this.value.trim();
-				if (query.length < 3) { suggestionsBox.style.display = 'none'; return; }
-
-				try {
-					// CAMBIO IMPORTANTE: search/tv en vez de search/movie
-					const res = await fetch(`https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&language=es-ES&query=${query}`);
-					const data = await res.json();
-					suggestionsBox.innerHTML = '';
-
-					if (data.results && data.results.length > 0) {
-						suggestionsBox.style.display = 'block';
-						data.results.slice(0, 5).forEach(serie => {
-							const div = document.createElement('div');
-							div.className = 'sugg-item';
-							
-							// Series usan 'name' en vez de 'title' y 'first_air_date'
-							const title = serie.name;
-							const year = serie.first_air_date ? serie.first_air_date.split('-')[0] : '';
-							const poster = serie.poster_path ? `https://image.tmdb.org/t/p/w92${serie.poster_path}` : '';
-							const fullPoster = serie.poster_path ? `https://image.tmdb.org/t/p/w500${serie.poster_path}` : '';
-
-							div.innerHTML = `<img src="${poster}" alt="img"><div><strong>${title}</strong> <small>(${year})</small></div>`;
-
-							div.addEventListener('click', () => {
-								tituloInput.value = title;
-								imagenInput.value = fullPoster; 
-								if(fullPoster) {
-									previewImg.src = fullPoster;
-									previewContainer.style.display = 'block';
-								}
-								suggestionsBox.style.display = 'none';
-							});
-							suggestionsBox.appendChild(div);
-						});
-					} else { suggestionsBox.style.display = 'none'; }
-				} catch (e) { console.error(e); }
-			});
-		}
 	</script>
-</body>
-
+<?php include "inc/piedepagina.php" ?>
