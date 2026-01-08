@@ -73,7 +73,6 @@ Para facilitar el llenado de datos, la app se conecta a la API de **TheMovieDB (
   <img src="https://www.svgrepo.com/show/475654/github-color.svg" alt="GitHub" width="20" style="vertical-align:middle; margin-right:5px;">
   <b>Valentin De Gennaro</b>
 </a>
-</br>
 <a href="https://github.com/ElOrange12" target="_blank">
    <img src="https://www.svgrepo.com/show/475654/github-color.svg" alt="GitHub" width="20" style="vertical-align:middle; margin-right:5px;">
   <b>Daniel Oliveira</b>
