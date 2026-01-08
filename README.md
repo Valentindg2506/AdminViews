@@ -27,7 +27,7 @@ Archivos relacionados con la estructura de datos.
 ---
 
 # Vista previa
----
+
 ![Login](screenshots/login.png)
 ---
 ![Registro](screenshots/registro.png)
