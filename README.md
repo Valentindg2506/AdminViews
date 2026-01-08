@@ -27,15 +27,15 @@ Archivos relacionados con la estructura de datos.
 ---
 
 # Vista previa
-**Login**
+## **Login**
 ![Login](screenshots/login.png)
-**Registro**
+## **Registro**
 ![Registro](screenshots/registro.png)
-**Inicio**
+## **Inicio**
 ![Inicio](screenshots/inicio.png)
-**Peliculas**
+## **Peliculas**
 ![Peliculas](screenshots/peliculas.png)
-**Series**
+## **Series**
 ![Series](screenshots/series.png)
 
 ---
