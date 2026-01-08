@@ -74,9 +74,14 @@
 		$sql_order = "ORDER BY FIELD(nivel_prioridad, 'Alta', 'Media', 'Baja')";
 	}
 
-	// Consulta final con el orden aplicado
-	$sql = "SELECT * FROM contenido WHERE tipo = 'pelicula' $sql_order";
-	$result = $conexion->query($sql);
+	// Consulta final con el orden aplicado Y FILTRO DE USUARIO
+	$usuario_id = $_SESSION['id_usuario'];
+	$sql = "SELECT * FROM contenido WHERE tipo = 'pelicula' AND usuario_id = ? $sql_order";
+	
+	$stmt = $conexion->prepare($sql);
+	$stmt->bind_param("i", $usuario_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
 
 	$peliculas = [];
 	if ($result) {

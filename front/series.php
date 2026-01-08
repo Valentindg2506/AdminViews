@@ -82,9 +82,14 @@
 		$sql_order = "ORDER BY FIELD(nivel_prioridad, 'Alta', 'Media', 'Baja')";
 	}
 
-	// FILTRAR SOLO SERIES (tipo = 'serie')
-	$sql = "SELECT * FROM contenido WHERE tipo = 'serie' $sql_order";
-	$result = $conexion->query($sql);
+	// FILTRAR SOLO SERIES (tipo = 'serie') DEL USUARIO ACTUAL
+	$usuario_id = $_SESSION['id_usuario'];
+	$sql = "SELECT * FROM contenido WHERE tipo = 'serie' AND usuario_id = ? $sql_order";
+	
+	$stmt = $conexion->prepare($sql);
+	$stmt->bind_param("i", $usuario_id);
+	$stmt->execute();
+	$result = $stmt->get_result();
 
 	$series = [];
 	if ($result) {
