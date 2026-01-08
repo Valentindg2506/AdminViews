@@ -25,7 +25,15 @@ unset($_SESSION['datos_viejos']);
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="AdminViews - Tracker de series y peliculas">
+	<meta name="keywords" content="Peliculas, Series, Seguimiento, Tracker, series y peliculas">
+	<meta name="author" content="Valentin de Gennaro, Daniel Oliveira Vidal">
+	<meta property="og:title" content="AdminViews - Tracker de series y peliculas">
+	<meta property="og:description" content="AdminViews - Tracker de series y peliculas">
+	<link rel="icon" type="image/png" href="img/adminviews_favicon.png">
+	<link rel="stylesheet" href="css/estilo.css">
 	<link rel="stylesheet" href="style/style.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	
