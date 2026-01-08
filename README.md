@@ -4,7 +4,7 @@
 
 ---
 
-## URL del proyecto: https://adminviews.valentindg.com/
+## 🔎 URL del proyecto: https://adminviews.valentindg.com/
 ---
 ## 📂 Estructura del Proyecto
 
@@ -26,16 +26,18 @@ Archivos relacionados con la estructura de datos.
 
 ---
 
-## 🚀 Guía de Instalación
+# 👁️ Vista previa
 
-1.  **Requisitos**: Tener instalado un servidor local como **XAMPP** o **WAMP**.
-2.  **Base de Datos**:
-    *   Abre `phpMyAdmin`.
-    *   Crea una base de datos llamada `AdminViews` (o importa el archivo `back/BD.sql`).
-    *   Asegúrate de que el usuario configurado en `front/inc/db.php` tenga permisos.
-3.  **Despliegue**:
-    *   Copia la carpeta `Proyecto-Entornos` a tu carpeta `htdocs` (en XAMPP) o `www` (en WAMP).
-    *   Accede desde el navegador a: `http://localhost/Proyecto-Entornos/front/`
+![Login](screenshots/login.png)
+---
+![Registro](screenshots/registro.png)
+---
+![Inicio](screenshots/inicio.png)
+---
+![Peliculas](screenshots/peliculas.png)
+---
+![Series](screenshots/series.png)
+---
 
 ---
 
@@ -67,11 +69,11 @@ Para facilitar el llenado de datos, la app se conecta a la API de **TheMovieDB (
 
 ## ✒️ Autores
 
+
 <a href="https://github.com/Valentindg2506" target="_blank">
   <img src="https://www.svgrepo.com/show/475654/github-color.svg" alt="GitHub" width="20" style="vertical-align:middle; margin-right:5px;">
   <b>Valentin De Gennaro</b>
 </a>
-<br>
 <a href="https://github.com/ElOrange12" target="_blank">
    <img src="https://www.svgrepo.com/show/475654/github-color.svg" alt="GitHub" width="20" style="vertical-align:middle; margin-right:5px;">
   <b>Daniel Oliveira</b>
