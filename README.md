@@ -4,7 +4,7 @@
 
 ---
 
-## 👁️ URL del proyecto: https://adminviews.valentindg.com/
+## 🔎 URL del proyecto: https://adminviews.valentindg.com/
 ---
 ## 📂 Estructura del Proyecto
 
@@ -26,7 +26,7 @@ Archivos relacionados con la estructura de datos.
 
 ---
 
-# Vista previa
+# 👁️ Vista previa
 
 ![Login](screenshots/login.png)
 ---
