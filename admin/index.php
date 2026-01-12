@@ -3,6 +3,10 @@
  * PÁGINA PRINCIPAL DEL ADMIN (DASHBOARD)
  */
 session_start();
+if (!isset($_SESSION['usuario'])) {
+    header("Location: ../front/intruso.php");
+    exit;
+}
 require_once "inc/db.php";
 
 // 1. OBTENER DATOS REALES (KPIs)
