@@ -4,7 +4,8 @@
 
 ---
 
-## 🔎 URL del proyecto: https://adminviews.valentindg.com/
+## 🔎 URL del proyecto: https://adminviews.valentindg.com/ <br>
+[![Informe](https://img.shields.io/badge/Informe.md-Leer_Informe-blueviolet?style=for-the-badge)](./informe.md)
 ---
 ## 📂 Estructura del Proyecto
 
@@ -55,8 +56,6 @@ Cada vez que añades, borras o mueves una serie/película:
 
 ### 3. API Externa
 Para facilitar el llenado de datos, la app se conecta a la API de **TheMovieDB (TMDB)**. Al escribir el nombre de una película/serie, autocompleta el título y busca la portada oficial.
-
-[![Informe](https://img.shields.io/badge/Informe.md-Leer_Informe-blueviolet?style=for-the-badge)](./informe.md)
 
 ---
 
