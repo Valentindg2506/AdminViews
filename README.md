@@ -58,6 +58,10 @@ Para facilitar el llenado de datos, la app se conecta a la API de **TheMovieDB (
 
 ---
 
+[![Informe](https://img.shields.io/badge/Informe-blue?style=for-the-badge)](/informe.md)
+
+---
+
 ## 🛠️ Tecnologías Utilizadas
 
 *   **Lenguaje:** PHP (Nativo, sin frameworks).
