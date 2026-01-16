@@ -209,4 +209,93 @@ También utilizamos una herramienta muy util que es una propiedad del `CSS` que 
 
 Por ultimo en lenguaje de marcas hemos utilizado `JS` para realizar eventos puntuales por los archivos en complementación al `CSS` como puede ser la animación en el inicio de sesión que cambia de inicio de sesión a registro y viceversa o a la hora de pasar una película/seria a la columna `Vistas` la calificación en estrellas que se le atribuye.
 
+```
+	<script>
+		// Referencias al DOM
+		const signUpButton = document.getElementById('signUp');
+		const signInButton = document.getElementById('signIn');
+		const container = document.getElementById('container');
+
+		// 1. Evento para mostrar panel de Registro
+		signUpButton.addEventListener('click', () => {
+			container.classList.add("right-panel-active");
+		});
+
+		// 2. Evento para mostrar panel de Login
+		signInButton.addEventListener('click', () => {
+			container.classList.remove("right-panel-active");
+		});
+
+		/**
+		 * LÓGICA MIXTA PHP/JS:
+		 * Si PHP detecta que hubo errores en el registro ($errores no está vacío),
+		 * inyectamos JS para activar el panel de registro automáticamente.
+		 * Esto evita que el usuario tenga que volver a hacer clic en "Registrarse"
+		 * para ver sus errores.
+		 */
+		<?php if (!empty($errores)): ?>
+			container.classList.add("right-panel-active");
+		<?php endif; ?>
+	</script>
+```
+
 Además también se ha utilizado en los formularios de películas/series como una api para la lógica de búsqueda de estas. 
+
+```
+	<script>
+		// API TMDB - Lógica de búsqueda (SERIES)
+		const API_KEY = '3fd2be6f0c70a2a598f084ddfb75487c'; 
+		const tituloInput = document.getElementById('titulo_input');
+		const suggestionsBox = document.getElementById('suggestions');
+		const imagenInput = document.getElementById('imagen_input');
+		const previewContainer = document.getElementById('preview_container');
+		const previewImg = document.getElementById('preview_img');
+
+		if (tituloInput) {
+			tituloInput.addEventListener('input', async function() {
+				const query = this.value.trim();
+				if (query.length < 3) { suggestionsBox.style.display = 'none'; return; }
+
+				try {
+					// endpoint: search/tv
+					const res = await fetch(`https://api.themoviedb.org/3/search/tv?api_key=${API_KEY}&language=es-ES&query=${query}`);
+					const data = await res.json();
+					suggestionsBox.innerHTML = '';
+
+					if (data.results && data.results.length > 0) {
+						suggestionsBox.style.display = 'block';
+						data.results.slice(0, 5).forEach(serie => {
+							const div = document.createElement('div');
+							div.className = 'sugg-item';
+							
+							// Para series es 'name' y 'first_air_date'
+							const title = serie.name;
+							const year = serie.first_air_date ? serie.first_air_date.split('-')[0] : '';
+							const poster = serie.poster_path ? `https://image.tmdb.org/t/p/w92${serie.poster_path}` : '';
+							const fullPoster = serie.poster_path ? `https://image.tmdb.org/t/p/w500${serie.poster_path}` : '';
+
+							div.innerHTML = `<img src="${poster}" alt="img"><div><strong>${title}</strong> <small>(${year})</small></div>`;
+
+							div.addEventListener('click', () => {
+								tituloInput.value = title;
+								imagenInput.value = fullPoster; 
+								if(fullPoster) {
+									previewImg.src = fullPoster;
+									previewContainer.style.display = 'block';
+								}
+								suggestionsBox.style.display = 'none';
+							});
+							suggestionsBox.appendChild(div);
+						});
+					} else { suggestionsBox.style.display = 'none'; }
+				} catch (e) { console.error(e); }
+			});
+		}
+	</script>
+```
+
+---
+
+En conclusión vemos como los lenguajes de marcas son la parte que materializa la aplicación en lo que vamos a ver en pantalla, utilizando los diferentes lenguajes para que quede una interfaz bonita y estética a la vez que funcional, ordenada e intuitiva, haciendo así una experiencia del usuario placentera y unica.
+
+
