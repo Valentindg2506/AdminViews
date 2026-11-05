@@ -1,83 +1,39 @@
-# 🎬 AdminViews - Tracker de Series y Películas
+# 🎬 AdminViews · Tracker de series y películas
 
-**AdminViews** es una aplicación web diseñada para llevar un control personal del contenido audiovisual que consumes. Permite a los usuarios registrarse y organizar series y películas en listas personalizadas según su estado (viendo, vistas, pendientes).
+Aplicación web para llevar el control personal de lo que ves: cada usuario organiza sus series y películas en listas según su estado (**viendo**, **vistas** y **pendientes**), con portadas y títulos que se completan solos.
 
----
+🔎 Ver online: [adminviews.valentindg.com](https://adminviews.valentindg.com/)
 
-## 🔎 URL del proyecto: https://adminviews.valentindg.com/ <br>
+## Vista previa
 
-[![Informe](https://img.shields.io/badge/Informe.md-Leer_Informe-0969da?style=for-the-badge)](./informe.md)
+| Login | Inicio | Películas |
+|---|---|---|
+| ![Login](screenshots/login.png) | ![Inicio](screenshots/inicio.png) | ![Películas](screenshots/peliculas.png) |
 
----
-## 📂 Estructura del Proyecto
+## Qué hace
 
-El proyecto se divide en Front-end (interfaz) y Back-end (lógica y datos).
+- **Registro e inicio de sesión** con validación de correo y contraseña segura (mínimo 8 caracteres, mayúscula y símbolo). Las contraseñas se guardan cifradas con `password_hash()` y se comprueban con `password_verify()`.
+- **Listas personales** de series y películas: añadir, borrar y mover títulos entre estados.
+- **Autocompletado con TheMovieDB**: al escribir el nombre de una película o serie, la app consulta la API de TMDB, completa el título y trae la portada oficial.
+- **Panel de administración** para gestionar los usuarios y todo el contenido registrado en la plataforma.
 
-### `/front` (La Aplicación Web)
-Aquí reside todo el código fuente de la página web.
-*   **`index.php`**: Página de aterrizaje. Contiene el **Login** y **Registro**.
-*   **`exito.php`**: Panel principal (Dashboard). Es la primera pantalla que ves al iniciar sesión.
-*   **`peliculas.php` / `series.php`**: Módulos principales para gestionar tu contenido.
-*   **`/controladores`**: Scripts PHP que procesan formularios (Login y Registro) pero no muestran interfaz.
-*   **`/inc`**: Fragmentos de código reutilizables (Conexión a BD, Cabeceras, Pie de página).
-*   **`/css`** y **`/img`**: Estilos y recursos gráficos.
+## Cómo funciona
 
-### `/back` (Base de Datos)
-Archivos relacionados con la estructura de datos.
-*   **`BD.sql`**: Script SQL para crear la base de datos y las tablas necesarias.
-*   **Diagramas**: Imágenes o archivos que explican el modelo Entidad-Relación.
+Está hecha en **PHP nativo, sin frameworks**. Cada acción del usuario (añadir, mover o borrar) envía un formulario por POST con la acción indicada; el mismo archivo PHP la detecta, ejecuta la consulta correspondiente en MySQL y recarga la página para mostrar el estado actualizado. La sesión del usuario se mantiene con `session_start()`.
 
----
+## Estructura
 
-# 👁️ Vista previa
+| Carpeta | Contenido |
+|---|---|
+| `front/` | La aplicación del usuario: login y registro, panel principal y módulos de películas y series. Los controladores procesan los formularios y `inc/` reúne conexión, cabecera y pie. |
+| `admin/` | Panel de administración: usuarios, películas, series y el script de la base de datos. |
+| `pruebas_CB/` | Batería de pruebas con PHPUnit sobre el validador y el acceso a datos, con su informe y las decisiones de código. |
+| `screenshots/` | Capturas de la aplicación y diagrama de la base de datos. |
 
-![Login](screenshots/login.png)
----
-![Registro](screenshots/registro.png)
----
-![Inicio](screenshots/inicio.png)
----
-![Peliculas](screenshots/peliculas.png)
----
-![Series](screenshots/series.png)
----
+## Tecnologías
 
----
+PHP · MySQL · HTML5 · CSS3 (diseño responsive y animaciones) · JavaScript · API de TheMovieDB · PHPUnit
 
-## 🧠 Lógica de la Aplicación
+## Autores
 
-### 1. Autenticación (Login/Registro)
-El sistema usa `session_start()` de PHP para mantener al usuario conectado.
-*   **Registro**: Valida que el correo sea real, que la contraseña sea segura (+8 caracteres, mayúscula, símbolo) y encripta la contraseña con `password_hash()` antes de guardarla.
-*   **Login**: Busca al usuario y compara la contraseña ingresada con el hash guardado usando `password_verify()`.
-
-### 2. Gestión de Contenido
-Cada vez que añades, borras o mueves una serie/película:
-1.  **Frontend**: El formulario envía una petición POST con una `accion` (ej: "agregar", "mover").
-2.  **Backend (Mismo archivo)**: PHP detecta el POST, ejecuta la consulta SQL correspondiente y recarga la página (`header("Location: ...")`) para mostrar los cambios actualizados.
-
-### 3. API Externa
-Para facilitar el llenado de datos, la app se conecta a la API de **TheMovieDB (TMDB)**. Al escribir el nombre de una película/serie, autocompleta el título y busca la portada oficial.
-
----
-
-## 🛠️ Tecnologías Utilizadas
-
-*   **Lenguaje:** PHP (Nativo, sin frameworks).
-*   **Base de Datos:** MySQL
-*   **Frontend:** HTML5, CSS3 (Diseño responsivo y animaciones), JavaScript.
-*   **Externo:** API TheMovieDB (Fetch JS).
-
----
-
-## ✒️ Autores
-
-
-<a href="https://github.com/Valentindg2506" target="_blank">
-  <img src="https://www.svgrepo.com/show/475654/github-color.svg" alt="GitHub" width="20" style="vertical-align:middle; margin-right:5px;">
-  <b>Valentin De Gennaro</b>
-</a>
-<a href="https://github.com/ElOrange12" target="_blank">
-   <img src="https://www.svgrepo.com/show/475654/github-color.svg" alt="GitHub" width="20" style="vertical-align:middle; margin-right:5px;">
-  <b>Daniel Oliveira</b>
-</a>
+**Valentín Antonio De Gennaro** y **Daniel Oliveira**
